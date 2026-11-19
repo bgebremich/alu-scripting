@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 """Queries the Reddit API and prints a sorted count of given keywords."""
 import requests
-import string
 
 
 def count_words(subreddit, word_list, hot_list=[], after=None):
     """Prints a sorted count of given keywords in hot articles."""
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    headers = {'User-Agent': 'ALU-Project/1.0'}
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
     params = {'after': after} if after else {}
     
     response = requests.get(url, headers=headers, params=params,
@@ -35,9 +34,8 @@ def count_words(subreddit, word_list, hot_list=[], after=None):
     for title in hot_list:
         words = title.lower().split()
         for word in words:
-            clean_word = word.strip(string.punctuation)
-            if clean_word in word_counts:
-                word_counts[clean_word] += 1
+            if word in word_counts:
+                word_counts[word] += 1
                 
     sorted_counts = sorted(word_counts.items(), 
                            key=lambda item: (-item[1], item[0]))
